@@ -45,7 +45,7 @@ public class Player {
     }
 
     public void win() {
-        balance += currentBet * 2;
+        balance += currentBet;
         currentBet = 0;
     }
 
@@ -66,4 +66,10 @@ public class Player {
         this.isPlaying = false;
     }
 
+    public Card doubleDown() {
+        balance -= currentBet;
+        currentBet =  2 * currentBet;
+        this.isPlaying = false;
+        return hand.drawCard();
+    }
 }
