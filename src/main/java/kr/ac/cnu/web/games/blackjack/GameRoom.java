@@ -75,5 +75,9 @@ public class GameRoom {
         evaluator.evaluate();
         this.isFinished = true;
     }
+    public Card doubleDown(String name) {
+        Player player = playerList.get(name);
 
+        return player.doubleDown();
+    }
 }
