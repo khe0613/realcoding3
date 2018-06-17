@@ -449,6 +449,7 @@
 <script>
     var user;
     var gameRoomId;
+    var div =  new Array();
 
     $('#login_button').click(function () {
         var loginName = $('#input_login_name').val();
@@ -459,6 +460,12 @@
             contentType: 'application/json;'
         }).done(function (data) {
             $('#login').hide();
+
+            div.push("<div class='userInfo'>");
+            div.push("사용자 : " + data.name+"&nbsp;&nbsp;&nbsp;&nbsp;" +"보유금액 : " + data.account);
+            div.push("</div>");
+
+            $("#lobby").prepend(div.join(""));
             $('#lobby').show();
             user = data;
         });
@@ -488,7 +495,10 @@
         }).done(function (data) {
             $('#login').hide();
             $('#lobby').hide();
+
+            $("#game").prepend(div.join(""));
             $('#game').show();
+
             gameRoomId = data.roomId;
             drawGameRoom(data);
         });
