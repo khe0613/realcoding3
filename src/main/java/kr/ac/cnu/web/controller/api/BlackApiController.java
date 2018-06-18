@@ -6,7 +6,10 @@ import kr.ac.cnu.web.games.blackjack.GameRoom;
 import kr.ac.cnu.web.model.User;
 import kr.ac.cnu.web.repository.UserRepository;
 import kr.ac.cnu.web.service.BlackjackService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,13 +35,18 @@ import java.util.Optional;
 public class BlackApiController {
     @Autowired
     private BlackjackService blackjackService;
+
     @Autowired
     private UserRepository userRepository;
 
+
+
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User login(@RequestBody String name) {
+
         return userRepository.findById(name).orElseThrow(() -> new NoUserException());
     }
+
 
     @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User singup(@RequestBody String name) {
@@ -50,6 +60,7 @@ public class BlackApiController {
         User user = new User(name, 50000);
 
         // TODO save in repository
+
         return userRepository.save(user);
     }
 
@@ -67,7 +78,6 @@ public class BlackApiController {
     @PostMapping(value = "/rooms/{roomId}/bet", consumes = MediaType.APPLICATION_JSON_VALUE)
     public GameRoom bet(@RequestHeader("name") String name, @PathVariable String roomId, @RequestBody long betMoney) {
         User user = this.getUserFromSession(name);
-
         return blackjackService.bet(roomId, user, betMoney);
     }
 
@@ -75,21 +85,22 @@ public class BlackApiController {
     public GameRoom hit(@RequestHeader("name") String name, @PathVariable String roomId) {
         User user = this.getUserFromSession(name);
 
-        return blackjackService.hit(roomId, user);
+
+        return blackjackService.hit(roomId,user, userRepository);
     }
 
     @PostMapping("/rooms/{roomId}/stand")
     public GameRoom stand(@RequestHeader("name") String name, @PathVariable String roomId) {
         User user = this.getUserFromSession(name);
 
-        return blackjackService.stand(roomId, user);
+        return blackjackService.stand(roomId, user , userRepository);
     }
 
     @PostMapping("/rooms/{roomId}/doubleDown")
     public GameRoom doubleDown(@RequestHeader("name") String name, @PathVariable String roomId) {
         User user = this.getUserFromSession(name);
 
-        return blackjackService.doubleDown(roomId, user);
+        return blackjackService.doubleDown(roomId, user,userRepository);
     }
 
     @GetMapping("/rooms/{roomId}")
@@ -99,6 +110,31 @@ public class BlackApiController {
 
 
     private User getUserFromSession(String name) {
+
         return userRepository.findById(name).orElseThrow(() -> new NoLoginException());
+    }
+
+    @GetMapping("/ranking")
+    public String getRank(){
+
+        java.util.List<User> tempt = userRepository.findAll();
+
+        Collections.sort(tempt);
+        List<User> rank = tempt;
+        User temp = null;
+        JSONObject ob = new JSONObject();
+        JSONArray ar = new JSONArray();
+
+        for(int i=0;i<rank.size();i++){
+            temp = rank.get(i);
+            JSONObject obj = new JSONObject();
+            obj.put("name",temp.getName());
+            obj.put("account",temp.getAccount());
+
+            ar.add(obj);
+        }
+
+
+        return ar.toJSONString();
     }
 }
