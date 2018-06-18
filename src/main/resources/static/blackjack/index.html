@@ -76,7 +76,7 @@
     }
 
     .dealer-cards, .player-cards {
-        padding-top: 50px;
+        padding-top: 20px;
         /*width: 164px;*/
         margin: 0 auto;
         display: inline-block;
@@ -462,8 +462,8 @@
             $('#login').hide();
 
             div.push("<div class='userInfo'>");
-            div.push("사용자 : " + data.name+"&nbsp;&nbsp;&nbsp;&nbsp;" +"보유금액 : " + data.account);
-            div.push("</div>");
+            div.push("사용자 : " + data.name+"&nbsp;&nbsp;&nbsp;&nbsp;" +"보유금액 : <span class='userAccount'>" + data.account+"</span>");
+        div.push("</div>");
 
             $("#lobby").prepend(div.join(""));
             $('#lobby').show();
@@ -583,6 +583,11 @@
         $('#bet').html(currentBet - bet);
         $('#money').html(money + bet);
     });
+
+    $('#money').on("DOMSubtreeModified",function(){
+        $("#game .userAccount").text($("#money").text());
+    });
+
 
     function drawGameRoom(gameRoom) {
         console.log(gameRoom);
