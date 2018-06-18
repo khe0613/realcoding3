@@ -6,6 +6,8 @@ import kr.ac.cnu.web.games.blackjack.GameRoom;
 import kr.ac.cnu.web.model.User;
 import kr.ac.cnu.web.repository.UserRepository;
 import kr.ac.cnu.web.service.BlackjackService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -108,5 +112,29 @@ public class BlackApiController {
     private User getUserFromSession(String name) {
 
         return userRepository.findById(name).orElseThrow(() -> new NoLoginException());
+    }
+
+    @GetMapping("/ranking")
+    public String getRank(){
+
+        java.util.List<User> tempt = userRepository.findAll();
+
+        Collections.sort(tempt);
+        List<User> rank = tempt;
+        User temp = null;
+        JSONObject ob = new JSONObject();
+        JSONArray ar = new JSONArray();
+
+        for(int i=0;i<rank.size();i++){
+            temp = rank.get(i);
+            JSONObject obj = new JSONObject();
+            obj.put("name",temp.getName());
+            obj.put("account",temp.getAccount());
+
+            ar.add(obj);
+        }
+        System.out.println(ar.toString());
+
+        return ar.toJSONString();
     }
 }

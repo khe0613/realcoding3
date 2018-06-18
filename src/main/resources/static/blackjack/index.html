@@ -393,9 +393,25 @@
         color: green;
         font-size: 21px;
     }
+
+    .Rank{
+        text-align: center;
+    }
+
+    #ranking {
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        background-color: ivory;
+    }
+
+
+
 </style>
 </head>
 <body>
+<div id="ranking"></div>
+
 <div class="page" id="login">
     <div>
         <input type="text" id="input_login_name"/>
@@ -451,6 +467,19 @@
     var gameRoomId;
     var div =  new Array();
 
+    var showRank = function(){
+        $('#ranking').empty();
+        $.ajax({
+            type: 'GET', url: 'http://localhost:8080/api/black-jack/ranking',contentType: 'application/json;'
+        }).done(function(data){
+            var rank=JSON.parse(data);
+            for(var i=0;i<rank.length;i++) {
+                $('#ranking').append(`<div class = "Rank">${rank[i].name}</div>`);
+                $("#ranking").append(`<div class = "Rank">${rank[i].account}</div>`);
+            }
+        });
+    }
+
     $('#login_button').click(function () {
         var loginName = $('#input_login_name').val();
         $.ajax({
@@ -469,6 +498,7 @@
             $('#lobby').show();
             user = data;
         });
+        showRank();
     });
 
     $('#signup_button').click(function () {
@@ -489,6 +519,7 @@
             $('#lobby').show();
             user = data;
         });
+        showRank();
     });
 
     $('#create_room_button').click(function () {
