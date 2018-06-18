@@ -463,7 +463,7 @@
 
             div.push("<div class='userInfo'>");
             div.push("사용자 : " + data.name+"&nbsp;&nbsp;&nbsp;&nbsp;" +"보유금액 : <span class='userAccount'>" + data.account+"</span>");
-        div.push("</div>");
+            div.push("</div>");
 
             $("#lobby").prepend(div.join(""));
             $('#lobby').show();
@@ -480,6 +480,12 @@
             contentType: 'application/json;'
         }).done(function (data) {
             $('#login').hide();
+
+            div.push("<div class='userInfo'>");
+            div.push("사용자 : " + data.name+"&nbsp;&nbsp;&nbsp;&nbsp;" +"보유금액 : <span class='userAccount'>" + data.account+"</span>");
+            div.push("</div>");
+
+            $("#lobby").prepend(div.join(""));
             $('#lobby').show();
             user = data;
         });
