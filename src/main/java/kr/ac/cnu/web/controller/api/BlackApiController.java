@@ -133,7 +133,7 @@ public class BlackApiController {
 
             ar.add(obj);
         }
-        System.out.println(ar.toString());
+
 
         return ar.toJSONString();
     }
