@@ -45,20 +45,17 @@ public class Player {
     }
 
     public void win() {
-        balance += currentBet;//
+        balance += currentBet*2;
         if(hand.getCardSum() == 21){
             balance += 0.5 * currentBet;
         }
-        currentBet = 0;
     }
 
     public void tie() {
         balance += currentBet;
-        currentBet = 0;
     }
 
     public void lost() {
-        currentBet = 0;
     }
 
     public Card hitCard() {
@@ -71,7 +68,7 @@ public class Player {
 
     public Card doubleDown() {
         balance -= currentBet;
-        currentBet =  2 * currentBet;
+        currentBet *= 2;
         this.isPlaying = false;
         return hand.drawCard();
     }
