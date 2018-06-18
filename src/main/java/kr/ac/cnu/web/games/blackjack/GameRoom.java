@@ -62,6 +62,7 @@ public class GameRoom {
         Player player = playerList.get(name);
         Card hitCard = player.hitCard();
         if(player.getHand().getCardSum() > 21) {
+            evaluator.evaluate();
             this.isFinished = true;
         }
         return hitCard;

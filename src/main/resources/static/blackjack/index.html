@@ -533,7 +533,6 @@
     })
 
     $('#dd').click(function() {
-        var curBet = parseInt($('#bet').html());//fix
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/doubleDown',
@@ -542,12 +541,11 @@
             },
         }).done(function(data) {
             drawGameRoom(data);
-            $('#bet').html(curBet);//fix
         });
     })
 
     $('#stand').click(function () {
-        var curBet = parseInt($('#bet').html());//fix
+        var bet = parseInt($('#bet').html());
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/stand',
@@ -556,12 +554,13 @@
             },
         }).done(function (data) {
             drawGameRoom(data);
-            $('#bet').html(curBet);//fix
+            var money = parseInt($('#money').html());
+            $('#money').html(money - bet);
         });
     })
 
     $('#more').click(function () {
-        var bet = 1000;//fix
+        var bet = 1000;
         var currentBet = parseInt($('#bet').html());
         var money = parseInt($('#money').html());
         if (money < bet) {
@@ -573,7 +572,7 @@
     });
 
     $('#less').click(function () {
-        var bet = 1000;//fix
+        var bet = 1000;
         var currentBet = parseInt($('#bet').html());
         var money = parseInt($('#money').html());
         if (currentBet < bet) {
@@ -631,6 +630,10 @@
 
         $('#bet').html(gameRoom.playerList[user.name].currentBet);
         $('#money').html(gameRoom.playerList[user.name].balance);
+        if (parseInt($('#playerTotal').html()) > 21) {
+            $('#money').html(gameRoom.playerList[user.name].balance - gameRoom.playerList[user.name].currentBet);
+        }
+
     }
 
     function generateCardDiv(rank, suit) {
