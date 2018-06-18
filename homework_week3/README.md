@@ -1,5 +1,5 @@
-﻿# Porject 
-
+﻿# Porject
+json-simple-1.1.1.jar 파일을 import 해야합니다.
 3조
 - 김창희
 - 임성근
@@ -56,5 +56,5 @@
 1. rokim@riotgames.com 로 메일 주세요
 2. 메일 제목에는 [충남대] 를 prefix 로 붙여주세요.
 
-## 참고 
+## 참고
 1. https://html5blackjack.net/
