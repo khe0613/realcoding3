@@ -14,8 +14,18 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Comparable<User> {
     @Id
     private String name;
     private long account;
+    @Override
+    public int compareTo(User u){
+        if(this.account>u.account){
+            return -1;
+        }else if(this.account<u.account){
+            return 1;
+        }else {
+            return 0;
+        }
+    }
 }
