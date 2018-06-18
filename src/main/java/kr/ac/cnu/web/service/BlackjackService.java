@@ -3,6 +3,7 @@ package kr.ac.cnu.web.service;
 import kr.ac.cnu.web.games.blackjack.Deck;
 import kr.ac.cnu.web.games.blackjack.GameRoom;
 import kr.ac.cnu.web.model.User;
+import kr.ac.cnu.web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -52,28 +53,28 @@ public class BlackjackService {
         return gameRoom;
     }
 
-    public GameRoom hit(String roomId, User user) {
+    public GameRoom hit(String roomId, User user , UserRepository userRepository) {
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
-        gameRoom.hit(user.getName());
+        gameRoom.hit(user.getName(), gameRoom , userRepository);
 
         return gameRoom;
     }
 
-    public GameRoom stand(String roomId, User user) {
+    public GameRoom stand(String roomId, User user, UserRepository userRepository) {
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
         gameRoom.stand(user.getName());
-        gameRoom.playDealer();
+        gameRoom.playDealer(userRepository);
 
         return gameRoom;
     }
 
-    public GameRoom doubleDown(String roomId, User user) {
+    public GameRoom doubleDown(String roomId, User user, UserRepository userRepository) {
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
         gameRoom.doubleDown(user.getName());
-        gameRoom.playDealer();
+        gameRoom.playDealer(userRepository);
         return gameRoom;
     }
 }
