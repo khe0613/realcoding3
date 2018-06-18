@@ -502,8 +502,9 @@
             $("#lobby").prepend(div.join(""));
             $('#lobby').show();
             user = data;
+            showRank();
         });
-        showRank();
+
     });
 
     $('#signup_button').click(function () {
@@ -523,9 +524,9 @@
             $("#lobby").prepend(div.join(""));
             $('#lobby').show();
             user = data;
-
+            showRank();
         });
-        showRank();
+
     });
 
     $('#create_room_button').click(function () {
